@@ -579,3 +579,29 @@ oc get secret
 oc get project
 oc proejct nodejs-mongodb
 oc project nodejs-mongodb
+history
+ls
+cd temp/
+ls
+cd ..
+ls -l
+rm temp -rf
+history > history
+vi history 
+ls
+git init
+git add README.md
+git add .
+git commit -m "first commit"
+git remote add origin https://github.com/wael2000/ocp-aws-master.git
+git push -u origin master
+exit
+oc project
+oc get hpa -w
+oc project demo
+oc new-app https://github.com/wael2000/containerpoc.git --name=containerpoc -e
+COUCHBASE='ec2-54-191-81-37.us-west-2.compute.amazonaws.com'
+oc new-app https://github.com/wael2000/containerpoc.git --name=containerpoc -e
+COUCHBASE='ec2-54-191-81-37.us-west-2.compute.amazonaws.com'
+COUCHBASE='ec2-54-191-81-37.us-west-2.compute.amazonaws.co
+oc new-app https://github.com/wael2000/containerpoc.git --name=containerpoc -e COUCHBASE='ec2-54-191-81-37.us-west-2.compute.amazonaws.com'

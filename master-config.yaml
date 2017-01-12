@@ -1,0 +1,207 @@
+admissionConfig:
+apiLevels:
+- v1
+apiVersion: v1
+assetConfig:
+  logoutURL: ""
+  masterPublicURL: https://openshift-master.containerpoc.com
+  publicURL: https://openshift-master.containerpoc.com/console/
+  metricsPublicURL: https://metrics.apps.containerpoc.com/hawkular/metrics
+  loggingPublicURL: https://kibana.apps.containerpoc.com
+  servingInfo:
+    bindAddress: 0.0.0.0:443
+    bindNetwork: tcp4
+    certFile: master.server.crt
+    clientCA: ""
+    keyFile: master.server.key
+    maxRequestsInFlight: 0
+    requestTimeoutSeconds: 0
+  extensionScripts:
+    - /root/techpreview.js
+controllerLeaseTTL: 30
+controllerConfig:
+  serviceServingCert:
+    signer:
+      certFile: service-signer.crt
+      keyFile: service-signer.key
+controllers: '*'
+corsAllowedOrigins:
+  - 127.0.0.1
+  - localhost
+  - 10.20.4.251
+  - openshift.default.svc
+  - kubernetes.default
+  - kubernetes.default.svc.cluster.local
+  - kubernetes
+  - openshift.default
+  - internal-openshift-master.containerpoc.com
+  - ip-10-20-4-251.ec2.internal
+  - 172.30.0.1
+  - openshift.default.svc.cluster.local
+  - openshift-master.containerpoc.com
+  - kubernetes.default.svc
+  - openshift
+dnsConfig:
+  bindAddress: 0.0.0.0:8053
+  bindNetwork: tcp4
+etcdClientInfo:
+  ca: master.etcd-ca.crt
+  certFile: master.etcd-client.crt
+  keyFile: master.etcd-client.key
+  urls:
+    - https://ip-10-20-5-118.ec2.internal:2379
+    - https://ip-10-20-6-42.ec2.internal:2379
+    - https://ip-10-20-4-251.ec2.internal:2379
+etcdStorageConfig:
+  kubernetesStoragePrefix: kubernetes.io
+  kubernetesStorageVersion: v1
+  openShiftStoragePrefix: openshift.io
+  openShiftStorageVersion: v1
+imageConfig:
+  format: openshift3/ose-${component}:${version}
+  latest: false
+kind: MasterConfig
+kubeletClientInfo:
+  ca: ca.crt
+  certFile: master.kubelet-client.crt
+  keyFile: master.kubelet-client.key
+  port: 10250
+kubernetesMasterConfig:
+  admissionConfig:
+    pluginConfig:
+      {}
+  apiServerArguments: 
+    cloud-config:
+    - /etc/origin/cloudprovider/aws.conf
+    cloud-provider:
+    - aws
+  controllerArguments: 
+    cloud-config:
+    - /etc/origin/cloudprovider/aws.conf
+    cloud-provider:
+    - aws
+  masterCount: 3
+  masterIP: 10.20.4.251
+  podEvictionTimeout: 
+  proxyClientInfo:
+    certFile: master.proxy-client.crt
+    keyFile: master.proxy-client.key
+  schedulerConfigFile: /etc/origin/master/scheduler.json
+  servicesNodePortRange: ""
+  servicesSubnet: 172.30.0.0/16
+  staticNodeNames: []
+masterClients:
+  externalKubernetesClientConnectionOverrides:
+    acceptContentTypes: application/vnd.kubernetes.protobuf,application/json
+    contentType: application/vnd.kubernetes.protobuf
+    burst: 400
+    qps: 200
+  externalKubernetesKubeConfig: ""
+  openshiftLoopbackClientConnectionOverrides:
+    acceptContentTypes: application/vnd.kubernetes.protobuf,application/json
+    contentType: application/vnd.kubernetes.protobuf
+    burst: 600
+    qps: 300
+  openshiftLoopbackKubeConfig: openshift-master.kubeconfig
+masterPublicURL: https://openshift-master.containerpoc.com
+networkConfig:
+  clusterNetworkCIDR: 172.16.0.0/16
+  hostSubnetLength: 8
+  networkPluginName: redhat/openshift-ovs-subnet
+# serviceNetworkCIDR must match kubernetesMasterConfig.servicesSubnet
+  serviceNetworkCIDR: 172.30.0.0/16
+  externalIPNetworkCIDRs: 
+  - 0.0.0.0/0
+oauthConfig:
+  assetPublicURL: https://openshift-master.containerpoc.com/console/
+  grantConfig:
+    method: auto
+  identityProviders:
+  - challenge: false
+    login: true
+    mappingMethod: claim
+    name: github
+    provider:
+      apiVersion: v1
+      clientID: 5694ef95db9f43e315b3
+      clientSecret: 28d0d07d4d4af9a38a40d39539a8ac9585f9b66f
+      kind: GitHubIdentityProvider
+      organizations:
+      - ekpoc2017
+  masterCA: ca-bundle.crt
+  masterPublicURL: https://openshift-master.containerpoc.com
+  masterURL: https://internal-openshift-master.containerpoc.com
+  sessionConfig:
+    sessionMaxAgeSeconds: 3600
+    sessionName: ssn
+    sessionSecretsFile: /etc/origin/master/session-secrets.yaml
+  tokenConfig:
+    accessTokenMaxAgeSeconds: 2419200
+    authorizeTokenMaxAgeSeconds: 500
+pauseControllers: false
+policyConfig:
+  bootstrapPolicyFile: /etc/origin/master/policy.json
+  openshiftInfrastructureNamespace: openshift-infra
+  openshiftSharedResourcesNamespace: openshift
+projectConfig:
+  defaultNodeSelector: "role=app"
+  projectRequestMessage: ""
+  projectRequestTemplate: ""
+  securityAllocator:
+    mcsAllocatorRange: "s0:/2"
+    mcsLabelsPerProject: 5
+    uidAllocatorRange: "1000000000-1999999999/10000"
+routingConfig:
+  subdomain:  "apps.containerpoc.com"
+serviceAccountConfig:
+  limitSecretReferences: false
+  managedNames:
+  - default
+  - builder
+  - deployer
+  masterCA: ca-bundle.crt
+  privateKeyFile: serviceaccounts.private.key
+  publicKeyFiles:
+  - serviceaccounts.public.key
+servingInfo:
+  bindAddress: 0.0.0.0:443
+  bindNetwork: tcp4
+  certFile: master.server.crt
+  clientCA: ca.crt
+  keyFile: master.server.key
+  maxRequestsInFlight: 500
+  requestTimeoutSeconds: 3600
+volumeConfig:
+  dynamicProvisioningEnabled: True
+jenkinsPipelineConfig:
+  autoProvisionEnabled: true
+auditConfig:
+   enabled: true
+admissionConfig:
+  pluginConfig:
+    openshift.io/ImagePolicy:
+      configuration:
+        kind: ImagePolicyConfig
+        apiVersion: v1
+        resolveImages: AttemptRewrite 
+        executionRules: 
+        - name: execution-denied
+          onResources: 
+          - resource: pods
+          - resource: builds
+          reject: true 
+          matchImageAnnotations: 
+          - key: images.openshift.io/deny-execution
+            value: "true"
+          skipOnResolutionFailure: true 
+        - name: allow-images-from-internal-registry
+          onResources:
+          - resource: pods
+          - resource: builds
+          matchIntegratedRegistry: true
+        - name: allow-images-from-dockerhub
+          onResources:
+          - resource: pods
+          - resource: builds
+          matchRegistries:
+          - docker.io
