@@ -1,0 +1,587 @@
+    1  oc whoami
+    2  oc get nodes
+    3  oc get pods
+    4  oadm policy add-cluster-role-to-user cluster-admin ekpoc
+    5  oadm policy add-cluster-role-to-user cluster-admin EKPoC
+    6  vi metrics_setup.sh
+    7  chmod +x metrics_setup.sh
+    8  ./metrics_setup.sh 
+    9  oc get pods -n openshift-infra
+   10  oc project openshift-infra
+   11  oc get pods
+   12  oc logs metrics-deployer-4qj85
+   13  ps x
+   14  oc get users
+   15  ls
+   16  vi metrics_setup.sh 
+   17  oc get all
+   18  oc delete all,sa,templates,secrets,pvc --selector="metrics-infra"
+   19  oc delete sa,secret metrics-deployer
+   20  ls
+   21  cat metrics_setup.sh 
+   22  export ZONE=containerpoc.com
+   23  export METRICS_URL=metrics.apps.${ZONE}
+   24  oc project openshift-infra   2>&1
+   25        oc create -f - <<API
+   26        apiVersion: v1
+   27        kind: ServiceAccount
+   28        metadata:
+   29          name: metrics-deployer
+   30        secrets:
+   31        - name: metrics-deployer
+   32  API
+   33  oc patch namespace/openshift-infra -p '{"metadata":{"annotations":{"openshift.io/node-selector":"role=infra"}}}';
+   34  oadm policy add-role-to-user edit system:serviceaccount:openshift-infra:metrics-deployer   2>&1
+   35  oadm policy add-cluster-role-to-user cluster-reader system:serviceaccount:openshift-infra:heapster   2>&1
+   36  oc secrets new metrics-deployer nothing=/dev/null
+   37  oc new-app openshift/metrics-deployer-template -p CASSANDRA_PV_SIZE=9Gi -p HAWKULAR_METRICS_HOSTNAME=${METRICS_URL} -p USE_PERSISTENT_STORAGE=true -p DYNAMICALLY_PROVISION_STORAGE=true 
+   38  oc get nodes --show-labels | grep us-east-1c | grep app
+   39  oc patch namespace/openshift-infra -p '{"metadata":{"annotations":{"openshift.io/node-selector":"failure-domain.beta.kubernetes.io/zone=us-east-1c"}}}';
+   40  oc edit project openshift-infra
+   41  oc edit namespace openshift-infra
+   42  oc describ namespace openshift-infra
+   43  oc describe namespace openshift-infra
+   44  oc edit namespace openshift-infra
+   45  oc get pvc
+   46  oc delete pvc
+   47  oc delete pvc metrics-cassandra-1
+   48  vi metrics_pv.yml
+   49  oc create -f metrics_pv.yml 
+   50  vi metrics_pv.yml
+   51  oc create -f metrics_pv.yml 
+   52  vi metrics_pv.yml
+   53  oc delete pv persistent
+   54  oc create -f metrics_pv.yml 
+   55  vi metrics_pv.yml 
+   56  oc create -f metrics_pv.yml 
+   57  oc delete all,sa,templates,secrets,pvc --selector="metrics-infra"
+   58  oc delete sa,secret metrics-deployer
+   59  vi metrics_setup.sh 
+   60  ./metrics_setup.sh 
+   61  oc status
+   62  oc get pods
+   63  oc get pods-w
+   64  oc get events -w
+   65  oc get pods -o wide
+   66  oc get users
+   67  oadm policy add-cluster-role-to-user cluster-admin gt000
+   68  oc delete user EKPoC
+   69  vi /etc/origin/master/master-config.yaml
+   70  oc get identities
+   71  oc delete identity github:24932954
+   72  oadm policy add-cluster-role-to-user cluster-admin EKPoC
+   73  oc get identities
+   74  grep -i metrics /etc/origin/master/master-config.yaml
+   75  oc get nodes --show-labels | grep us-east-1c | grep app
+   76  oc get nodes --show-labels | grep us-east-1b | grep app
+   77  vi logging_deploy.sh
+   78  chmod +x logging_deploy.sh 
+   79  ls
+   80  cp metrics_pv.yml logging_pv.yml
+   81  vi logging_pv.yml 
+   82  oc create -f logging_pv.yml
+   83  ./logging_deploy.sh 
+   84  oc get pods -n logging
+   85  oc get pods -n logging 
+   86  oc get pods -n logging -w
+   87  vi logging_deploy.sh
+   88  oc get nodes --show-labels
+   89  vi logging_deploy.sh
+   90  oc new-app logging-deployer-template --param MODE=uninstall -n logging   2>&1
+   91  vi logging_deploy.sh
+   92  oc project logging
+   93  oc get pvc
+   94  oc delete pvc logging-es-1
+   95  oc get pv
+   96  oc project default
+   97  oc delete project logging
+   98  vi logging_deploy.sh 
+   99  ./logging_deploy.sh 
+  100  vi logging_deploy.sh 
+  101  oc project logging
+  102  oc get pvc
+  103  oc get pv
+  104  vi logging_deploy.sh 
+  105  oc new-app logging-deployer-template --param MODE=install -n logging
+  106  vi logging_deploy.sh 
+  107  oc new-app logging-deployer-template --param MODE=uninstall -n logging
+  108  oc new-app logging-deployer-template --param MODE=install -n logging
+  109  oc get events -w
+  110  oc get pv
+  111  oadm policy add-cluster-role-to-user cluster-admin wael2000
+  112  oc get events -w
+  113  yum install wget
+  114  ls
+  115  pwd
+  116  exit
+  117  ls
+  118  cp metrics_pv.yml persistent.yml
+  119  vi persistent.yml 
+  120  mount -t nfs fs-f7ea30be.efs.us-east-1.amazonaws.com:/ /media
+  121  yum list nfs-utils
+  122  hostname
+  123  oc get ndoes
+  124  oc get nodes
+  125  mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2  fs-f7ea30be.efs.us-east-1.amazonaws.com:/ /media
+  126  ls /media/
+  127  showmount -e fs-f7ea30be.efs.us-east-1.amazonaws.com:
+  128  showmount -e fs-f7ea30be.efs.us-east-1.amazonaws.com
+  129  mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2  fs-f7ea30be.efs.us-east-1.amazonaws.com:/ /media
+  130  cd /media
+  131  ls
+  132  mkdir pv1g_{1,5}
+  133  ls
+  134  mkdir pv1g_{1.5}
+  135  ls
+  136  rm pv1g_\{1.5\}/
+  137  rmdir pv1g_\{1.5\}/
+  138  mkdir pv1g_[1-5]
+  139  ls
+  140  rmdir pv1g_*
+  141  mkdir pv1g_[1-5]
+  142  ls
+  143  rm pv1g_\[1-5\]/
+  144  rmdir pv1g_\[1-5\]/
+  145  mkdir pv{1,2,5}g_{1-5}
+  146  ls
+  147  rmdir pv*
+  148  ls
+  149  mkdir pv{1,2,5}g_{1..5}
+  150  ls
+  151  mkdir pv512m_{1..5}
+  152  ls
+  153  cd ..
+  154  chown -R nfsnobody.nfsnobody media/
+  155  chmod -R 777 media
+  156  umount /media
+  157  cd
+  158  mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2  fs-f7ea30be.efs.us-east-1.amazonaws.com:/pv1g_1 /media
+  159  cd /media
+  160  ls
+  161  cd 
+  162  umount cd
+  163  umount /media
+  164  ls
+  165  vi metrics_pv.yml 
+  166  vi persistent.yml 
+  167  oc create -f persistent.yml 
+  168  vi persistent.yml 
+  169  oc create -f persistent.yml 
+  170  vi persistent.yml 
+  171  oc create -f persistent.yml 
+  172  vi persistent.yml 
+  173  oc create -f persistent.yml 
+  174  vi persistent.yml 
+  175  oc create -f persistent.yml 
+  176  vi persistent.yml 
+  177  oc create -f persistent.yml 
+  178  vi persistent.yml 
+  179  oc create -f persistent.yml 
+  180  vi persistent.yml 
+  181  oc create -f persistent.yml 
+  182  vi persistent.yml 
+  183  oc create -f persistent.yml 
+  184  oc get pvc -n nodejs-mongodb
+  185  oc get pv
+  186  vi persistent.yml 
+  187  oc create -f persistent.yml 
+  188  vi persistent.yml 
+  189  oc create -f persistent.yml 
+  190  vi persistent.yml 
+  191  oc create -f persistent.yml 
+  192  vi persistent.yml 
+  193  oc create -f persistent.yml 
+  194  vi persistent.yml 
+  195  oc create -f persistent.yml 
+  196  vi persistent.yml 
+  197  oc create -f persistent.yml 
+  198  vi persistent.yml 
+  199  oc create -f persistent.yml 
+  200  vi persistent.yml 
+  201  oc create -f persistent.yml 
+  202  vi persistent.yml 
+  203  oc get pv
+  204  vi persistent.yml 
+  205  oc create -f persistent.yml 
+  206  vi persistent.yml 
+  207  oc create -f persistent.yml 
+  208  vi persistent.yml 
+  209  oc create -f persistent.yml 
+  210  vi persistent.yml 
+  211  oc create -f persistent.yml 
+  212  vi persistent.yml 
+  213  oc create -f persistent.yml 
+  214  oc get pvs
+  215  oc get pv
+  216  ls
+  217  vi techpreview.js
+  218  vi /etc/origin/master/master-config.yaml
+  219  systemctl restart atomic-openshift-master.service
+  220  systemctl restart atomic-openshift-master-api.service
+  221  exit
+  222  history | grep scp
+  223  exit
+  224  ls
+  225  scp techpreview.js root@ose-master03:/root
+  226  scp techpreview.js root@ose-master03.containerpoc.com:/root
+  227  cat techpreview.js
+  228  vi /etc/origin/master/master-config.yaml
+  229  oc project
+  230  exit
+  231  oc get hostsubnet 
+  232  oc get identity 
+  233  cd /etc/origin/master/
+  234  ls
+  235  ls *.key
+  236  oc get pods -o wide
+  237  oc get hostsubnet 
+  238  cd
+  239  grep -i auditconfig /etc/origin/master/master-config.yaml
+  240  vim /etc/origin/master/master-config.yaml
+  241  vi /etc/origin/master/master-config.yaml
+  242  systemctl restart atomic-openshift-master-api.service
+  243  grep -i auditconfig /etc/origin/master/master-config.yaml
+  244  grep -i auditconfig -A 1 /etc/origin/master/master-config.yaml
+  245  oc get nodes
+  246  oc get nodes --show-lbels
+  247  oc get nodes --show-labels
+  248  oc get ndoes
+  249  oc get nodes
+  250  oc get events
+  251  oc get pods
+  252  oc get pods --all-namespaces
+  253  cat /etc/hoss
+  254  cat /etc/hosts
+  255  dig ose-node01.containerpoc.com
+  256  oc get pv
+  257  oc get nodes
+  258  oc get pods -n cicd
+  259  oc get pods --all-namespaces
+  260  oc get nodes
+  261  oc get ndows
+  262  oc get nodes
+  263  oc get nodes --show-labels
+  264  oc get nodes --show-labels | grep role=app
+  265  oc get pods 
+  266  oc get pods --all-namespaces
+  267  oc project nodejs-mongodb
+  268  oc delete node ose-app-node01.containerpoc.com
+  269  oc get ndoes
+  270  oc get nodes
+  271  oc delete node ip-10-20-4-161.ec2.internal
+  272  w
+  273  docker ps
+  274  oc get nodes
+  275  oc get projects
+  276  oc project containerpoc
+  277  oc get pods
+  278  oc get dc
+  279  oc scale dc containerpoc --replicas=0
+  280  oc get projects
+  281  oc project nodejs-mongodb
+  282  oc get pods
+  283  oc get dc
+  284  oc project
+  285  oc project nodejs-mongodb
+  286  oc get pvc
+  287  oc get pv
+  288  oc project default
+  289  oc delete project nodejs-mongodb
+  290  oc get nodes
+  291  oc get pv
+  292  oc delete project autoscale
+  293  oc get pv
+  294  oc delete pv pv1g-3
+  295  oc get pv
+  296  oc get nodes
+  297  oc get nodes --show-labels | grep 171
+  298  oc get nodes
+  299  oc get pods --all-namespaces
+  300  oc get nodes
+  301  oc get nodes --show-labels
+  302  oc get nodes 
+  303  oc project default
+  304  oc get pods
+  305  oc logs docker-registry-2-alu9j
+  306  oc get nodes
+  307  oc get dc --all-namepsaces
+  308  oc get dc --all-namespaces
+  309  oc scale helloworld-rs --replicas=0 -n uat
+  310  oc scale dc helloworld-rs --replicas=0 -n uat
+  311  oc scale dc helloworld-rs --replicas=0 -n sit
+  312  oc scale dc a-ver --replicas=0 -n ab-deployment
+  313  oc scale dc b-ver --replicas=0 -n ab-deployment
+  314  oc scale dc secret-nodejs --replicas=0 -n mysecret
+  315  oc get dc --all-namespaces
+  316  oc project openshift-infra
+  317  oc get dc
+  318  oc get pods
+  319  oc get nodes
+  320  oc get ndoes
+  321  oc get nodes
+  322  oc add node ip-10-20-4-41.ec2.internal
+  323  oadm add node
+  324  oadm
+  325  oc get nodes
+  326  oc get projects
+  327  oc project containerpoc
+  328  oc get dc
+  329  oc get pods --all-namespaces
+  330  history | grep 'oc new-app
+  331  '
+  332  exit
+  333  mkdir .master
+  334  date +%T
+  335  date +%s
+  336  date +%S
+  337  date +%x
+  338  date +%X
+  339  date +%z
+  340  date +%:z
+  341  date +%::z
+  342  date +%D
+  343  date +%F
+  344  date +%F%H
+  345  date +%Y%M%D%H%S
+  346  date +%Y%M%%D
+  347  date +%Y%M%D
+  348  date +%Y%m%d
+  349  date +%Y%m%d%H%M
+  350  cp /etc/origin/master/master-config.yaml  .master/master-config_`date +%Y%m%d%H%M`.yaml
+  351  ls .master/master-config_201701101113.yaml 
+  352  vi /etc/origin/master/master-config.yaml
+  353  cp /etc/origin/master/admin.kubeconfig .kube/config
+  354  oc get proejct
+  355  oc get project
+  356  oc edit clusterrole edit
+  357  s2i
+  358  vi /etc/sysconfig/docker 
+  359  oc project
+  360  ocd get project
+  361  oc get project
+  362  oc proejct ssl-test
+  363  oc project ssl-test
+  364  oc get po
+  365  oc rsh nodeapp2-10-a496s
+  366  oc get po
+  367  oc rsh nodeapp2-10-a496s
+  368  exit
+  369  oc get project 
+  370  oc project ssl-test 
+  371  oc get pod
+  372  oc logs nodeapp2-10-a496s 
+  373  oc rsh nodeapp2-10-a496s 
+  374  curl 172.16.8.9:8080
+  375  curl www.google.com:443
+  376  curl https://www.google.com:443
+  377  clear
+  378  curl 172.16.8.9:8080
+  379  oc get pod
+  380  curl 172.16.8.9:8080
+  381  curl https://172.16.8.9:8080
+  382  curl 172.16.8.9:8080
+  383  oc get svc
+  384  curl 172.30.166.239:443
+  385  curl https://172.30.166.239:443
+  386  wget https://172.30.166.239:443
+  387  wget https://172.30.183.68:8080
+  388  oc project
+  389  oc project eap-ssl
+  390  oc create serviceaccount eap-service-account -n eap-ssl
+  391  oc policy add-role-to-user view system:serviceaccount:$(oc project -q):eap-service-account -n $(oc project -q)
+  392  keytool
+  393  /usr/bin/keytool
+  394  pwd
+  395  ls
+  396  mkdir temp
+  397  cd temp/
+  398  git clone https://github.com/wael2000/hibernate4.git
+  399  ls
+  400  cd hibernate4/
+  401  ls
+  402  oc secret new jboss-secret server.keystore 
+  403  oc get secrets
+  404  oc secrets add serviceaccount/eap-service-account secret/jboss-secret
+  405  oc new-app jboss-eap64-openshift:1.4~https://github.com/wael2000/helloworld-rs.git --name=helloworld-rs
+  406  oc get po
+  407  oc rsh helloworld-rs-1-2zjyo
+  408  /connec/connect
+  409  Q
+  410  oc rsh helloworld-rs-1-2zjyo
+  411  oc project ssl-test 
+  412  ls
+  413  oc get pv
+  414  oc get pvc
+  415  oc policy add-role-to-user cluster-admin wael2000 -n openshift-infra
+  416  oc rsh helloworld-rs-1-2zjyo
+  417  oc project eap-ssl 
+  418  oc rsh helloworld-rs-1-2zjyo
+  419  oc get v
+  420  oc get svc
+  421  wget http://172.30.62.93
+  422  wget http://172.30.62.93:8080
+  423  wget https://172.30.62.93:8443
+  424  wget https://172.30.62.93:8080
+  425  oc project
+  426  oc get all
+  427  oc get all --show-labels 
+  428  oc delete all --selector app=helloworld-rs
+  429  ls
+  430  history | gerp oc new-app jboss-eap64-openshift
+  431  oc get pv
+  432  oc get roles
+  433  oc get users
+  434  oc get projects
+  435  oc project buildtest
+  436  oc get sa
+  437  oc desc sa builder
+  438  oc describe sa builder
+  439  oc get roles
+  440  oc get rolebinding 
+  441  oc describe rolebinding system:image-builders
+  442  oc get policybinding 
+  443   oc describe clusterPolicyBindings :default
+  444   oc describe localPolicyBindings :default
+  445   oc describe policybinding :default
+  446   oadm policy add-role-to-user system:deployer wael2000
+  447   oadm policy remove-role-from-user cluster-admin wael2000
+  448   oadm policy remove-role-from-user
+  449   oadm policy remove-role-from-user -h
+  450  oadm policy remove-cluster-role-from-user cluster-admin wael2000
+  451  oc describer user wael
+  452  oc describe user wael
+  453  oc describe policyBindings :default -n wael2000
+  454  oc get policyBindings -n wael2000
+  455   oadm policy add-role-to-user system:deployer -n buildtest
+  456   oadm policy add-role-to-user system:deployer  wael2000 -n buildtest
+  457  oc get policyBindings -n wael2000
+  458  oc get policyBindings -n buildtest
+  459  oc get rolebinding -n buildtest
+  460   oadm policy add-role-to-user view  wael2000 -n buildtest
+  461  oc get rolebinding -n buildtest
+  462   oadm policy add-role-to-user system:image-puller  wael2000 -n buildtest
+  463  oc get rolebinding -n buildtest
+  464   oadm policy add-role-to-user system:deployment-controller  wael2000 -n buildtest
+  465   oadm policy add-role-to-user system:replication-controller  wael2000 -n buildtest
+  466  oc get rolebinding -n buildtest
+  467  oadm policy remove-cluster-role-from-user view wael2000
+  468  oadm policy remove-role-from-user view wael2000 -n buildtest
+  469  oc get rolebinding -n buildtest
+  470  oc whoami
+  471  oadm policy add-role-from-user view wael2000 -n buildtest
+  472  oadm policy add-role-to-user view wael2000 -n buildtest
+  473  oc get dc
+  474  oc scale dc cakephp-mysql-example --replicas=
+  475  oadm policy
+  476  oadm policy who-can
+  477  oadm policy who-can create deployment buildtest
+  478  oc get users
+  479  oc delete user EKPoC
+  480  oc get identities
+  481  oc delete identity github:24932954
+  482  oadm policy who-can create deployment buildtest
+  483  oadm policy who-can create deployment -n buildtest
+  484  oc get policyBindigs
+  485  oc get policyBindings
+  486  oc describe policyBindings :default
+  487  oc project buildtest
+  488  oc describe policyBindings :default
+  489  oc get rolebinding -n buildtest
+  490  oc get sa
+  491  oc desc sa deployer
+  492  oc describe sa deployer
+  493  oc get rolebinding -n buildtest
+  494  oc describe policybinding :default
+  495   oadm policy remove-role-from-user system:replication-controller  wael2000 -n buildtest
+  496   oadm policy remove-role-from-user system:deployment-controller  wael2000 -n buildtest
+  497   oadm policy remove-role-from-user system:image-builder  wael2000 -n buildtest
+  498  oc describe policybinding :default 
+  499   oadm policy remove-role-from-user system:deployer  wael2000 -n buildtest
+  500  oc describe policybinding :default
+  501   oadm policy add-role-to-user edit gt000 -n buildtest
+  502  oc describe policybinding :default
+  503   oadm policy remove-role-from-user system:image-puller  wael2000 -n buildtest
+  504   oadm policy remove-role-from-user view  wael2000 -n buildtest
+  505  oc describe policybinding :default
+  506   oadm policy add-role-to-user edit wael2000 -n buildtest
+  507  oc get pods
+  508  oadm policy remove-cluster-role-from-user system:build-strategy-docker wael2000 -n buildtest
+  509  oadm policy remove-cluster-role-from-user system:build-strategy-source wael2000 -n buildtest
+  510  oadm policy remove-cluster-role-from-user system:build-strategy-custom wael2000 -n buildtest
+  511  oc get events -w
+  512  oadm policy remove-cluster-role-from-group system:build-strategy-source system:authenticated -n buildtest
+  513  oc get events -w
+  514  oc get pods 
+  515  oadm policy add-cluster-role-to-group system:build-strategy-source system:authenticated
+  516   oadm policy remove-role-from-user edit wael2000 -n buildtest
+  517   oadm policy add-role-to-user view wael2000 -n buildtest
+  518  oc project
+  519  oc project eap-ssl
+  520  oc create serviceaccount eap-service-account -n eap-ssl
+  521  oc policy add-role-to-user view system:serviceaccount:$(oc project -q):eap-service-account -n $(oc project -q)
+  522  keytool
+  523  /usr/bin/keytool
+  524  pwd
+  525  ls
+  526  mkdir temp
+  527  cd temp/
+  528  git clone https://github.com/wael2000/hibernate4.git
+  529  ls
+  530  cd hibernate4/
+  531  ls
+  532  oc secret new jboss-secret server.keystore 
+  533  oc get secrets
+  534  oc secrets add serviceaccount/eap-service-account secret/jboss-secret
+  535  oc new-app jboss-eap64-openshift:1.4~https://github.com/wael2000/helloworld-rs.git --name=helloworld-rs
+  536  oc get po
+  537  oc rsh helloworld-rs-1-2zjyo
+  538  /connec/connect
+  539  Q
+  540  oc rsh helloworld-rs-1-2zjyo
+  541  oc project ssl-test 
+  542  ls
+  543  oc get pv
+  544  oc get pvc
+  545  oc policy add-role-to-user cluster-admin wael2000 -n openshift-infra
+  546  oc rsh helloworld-rs-1-2zjyo
+  547  oc project eap-ssl 
+  548  oc rsh helloworld-rs-1-2zjyo
+  549  oc get v
+  550  oc get svc
+  551  wget http://172.30.62.93
+  552  wget http://172.30.62.93:8080
+  553  wget https://172.30.62.93:8443
+  554  wget https://172.30.62.93:8080
+  555  oc project
+  556  oc get all
+  557  oc get all --show-labels 
+  558  oc delete all --selector app=helloworld-rs
+  559  ls
+  560  history | gerp oc new-app jboss-eap64-openshift
+  561  history | grep 'oc new-app jboss-eap64-openshift'
+  562  keytool -genkeypair
+  563  ls
+  564  oc get secrets
+  565  ls
+  566  oc new-app jboss-eap64-openshift:1.4~https://github.com/wael2000/helloworld-rs.git --name=helloworld-rs -e APPLICATION_HOSTNAME=127.0.01,EAP_HTTPS_SECRET=jboss-secret,EAP_HTTPS_KEYSTORE=server.keystore,EAP_HTTPS_NAME=selfsigned,EAP_HTTPS_PASSWORD=mykeystorepass
+  567  oc delete all --selector app=helloworld-rs
+  568  exit
+  569  oc project
+  570  oc get project
+  571  oc project nodejs-mongodb 
+  572  oc get hpa -w
+  573  oc get project
+  574  oc policy add-role-to-user admin wael2000 -n mysecret
+  575  oc project mysecret
+  576  oc get secret
+  577  oc get project
+  578  oc proejct nodejs-mongodb
+  579  oc project nodejs-mongodb
+  580  history
+  581  ls
+  582  cd temp/
+  583  ls
+  584  cd ..
+  585  ls -l
+  586  rm temp -rf
+  587  history > history

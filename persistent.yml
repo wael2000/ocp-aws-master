@@ -1,0 +1,13 @@
+apiVersion: "v1"
+kind: "PersistentVolume"
+metadata:
+  name: "pv512m-1"
+spec:
+  capacity:
+    storage: "512Mi"
+  accessModes:
+    - ReadWriteOnce
+  nfs: 
+    path: /pv512m_1
+    server: fs-f7ea30be.efs.us-east-1.amazonaws.com
+  persistentVolumeReclaimPolicy: Recycle
